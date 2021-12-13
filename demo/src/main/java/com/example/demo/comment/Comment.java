@@ -1,5 +1,8 @@
 package com.example.demo.comment;
 
+import com.example.demo.post.Post;
+import com.example.demo.user.User;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 
@@ -12,12 +15,22 @@ public class Comment {
     private String text;
     private LocalTime Time;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name="post_id",nullable = false)
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name="user_id",nullable = false)
+    private User user;
+
     public Comment(){}
 
-    public Comment(long id, String text, LocalTime time) {
+    public Comment(long id, String text, LocalTime time, Post post, User user) {
         this.id = id;
         this.text = text;
         Time = time;
+        this.post = post;
+        this.user = user;
     }
 
     public long getId() {
@@ -44,12 +57,30 @@ public class Comment {
         Time = time;
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", Time=" + Time +
+                ", post=" + post +
+                ", user=" + user +
                 '}';
     }
 }

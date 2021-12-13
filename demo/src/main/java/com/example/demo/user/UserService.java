@@ -41,5 +41,8 @@ public class UserService {
 
     }
     }
-
+    public void deleteUser(String id){
+        Long user_id=Long.parseLong(id);
+        UserRepository.deleteById(user_id);
+    }
 }
