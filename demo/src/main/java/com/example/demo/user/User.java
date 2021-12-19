@@ -4,6 +4,8 @@ import com.example.demo.comment.Comment;
 import com.example.demo.post.Post;
 import com.example.demo.type.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,24 +23,25 @@ public class User {
     private long Phone_number;
     private String password;
 
-    @JsonIgnore
-    @ManyToMany
-//            (mappedBy = "users")
-    @JoinTable(
-            name = "type_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "type_id")
-    )
+
+    @ManyToMany(mappedBy = "users")
+//    @JoinTable(
+//            name = "type_users",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "type_id")
+//    )
      Collection<Type> types = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @JsonIgnoreProperties("user")
     private Collection<Post> posts=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Collection<Comment> comment=new ArrayList<>();
 
-    public User(long id, long NID, String FName, String LName, long phone_number, String password, Collection<Type> types, Collection<Post> posts, Collection<Comment> comment) {
-        this.id = id;
+    public User(long NID, String FName, String LName, long phone_number, String password, Collection<Type> types, Collection<Post> posts, Collection<Comment> comment) {
         this.NID = NID;
         this.FName = FName;
         this.LName = LName;

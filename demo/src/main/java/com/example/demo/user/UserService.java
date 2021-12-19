@@ -45,4 +45,10 @@ public class UserService {
         Long user_id=Long.parseLong(id);
         UserRepository.deleteById(user_id);
     }
+
+    public User addTypeToUser(User user) {
+         User u = UserRepository.findById(user.getId()).orElse(null);
+         u.setTypes(user.getTypes());
+        return UserRepository.save(u);
+    }
 }

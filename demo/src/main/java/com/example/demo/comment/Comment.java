@@ -10,10 +10,10 @@ import java.time.LocalTime;
 @Table(name="Comment")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String text;
-    private LocalTime Time;
+    private String Time;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="post_id",nullable = false)
@@ -25,7 +25,7 @@ public class Comment {
 
     public Comment(){}
 
-    public Comment(long id, String text, LocalTime time, Post post, User user) {
+    public Comment(long id, String text, String time, Post post, User user) {
         this.id = id;
         this.text = text;
         Time = time;
@@ -49,11 +49,11 @@ public class Comment {
         this.text = text;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         Time = time;
     }
 

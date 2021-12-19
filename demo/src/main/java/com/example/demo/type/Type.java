@@ -2,6 +2,7 @@ package com.example.demo.type;
 
 import com.example.demo.post.Post;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,13 +12,14 @@ import java.util.Collection;
 @Table(name="Type")
 public class Type {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String Type;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<User> users = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "type")
     private Collection<Post> posts=new ArrayList<>();
 

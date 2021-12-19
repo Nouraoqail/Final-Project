@@ -51,14 +51,10 @@ public class UserController {
     public void deleteUser(@PathVariable String id) {
         UserService.deleteUser(id);
     }
-    @PutMapping("/{userId}/types/{typeId}")
-    User addTypeToUser(
-            @PathVariable Long userId,
-            @PathVariable Long typeId
-    ) {
-        User user = UserRepository.findById(userId).get();
-        Type type = TypeRepository.findById(typeId).get();
-        user.types.add(type);
-        return UserRepository.save(user);
+    @PostMapping("/addType")
+    public User addTypeToUser(@RequestBody User user) {
+
+        return UserService.addTypeToUser(user);
     }
 }
+//type inside user
