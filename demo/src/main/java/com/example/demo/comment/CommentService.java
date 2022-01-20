@@ -28,4 +28,24 @@ public class CommentService {
         return CommentRepository.save(comment);
     }
 
+    public void deleteComment(String id) {
+        Long comment_id=Long.parseLong(id);
+        CommentRepository.deleteById(comment_id);
+    }
+
+    public Comment updateComment(String id, Comment data) {
+        Long comment_id =Long.parseLong(id);
+        Comment comment= CommentRepository.findById(comment_id).orElse(null);
+
+        if(comment != null){
+            comment.setText(data.getText());
+            CommentRepository.save(comment);
+        }
+        return comment;
+    }
+
+//    public List<Comment> getCommentsByPostId(String post_id) {
+//        System.out.println(post_id);
+//        return CommentRepository.findByPost_Id(post_id);
+//    }
 }

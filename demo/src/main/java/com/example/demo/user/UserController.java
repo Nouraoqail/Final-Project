@@ -1,13 +1,8 @@
 package com.example.demo.user;
 
-import com.example.demo.post.Post;
-import com.example.demo.post.PostRepository;
-import com.example.demo.type.Type;
 import com.example.demo.type.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,50 +10,51 @@ import java.util.List;
 @CrossOrigin("*")
 public class UserController {
 
-    private final UserService UserService;
-    private final UserRepository UserRepository;
-    private final TypeRepository TypeRepository;
+    private final UserService userService;
+//    private final UserRepository userRepository;
+//    private final TypeRepository typeRepository;
 
-    @Autowired
-    public UserController(com.example.demo.user.UserService userService, com.example.demo.user.UserRepository userRepository, com.example.demo.type.TypeRepository typeRepository) {
-        UserService = userService;
-        UserRepository = userRepository;
-        TypeRepository = typeRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
+//        this.userRepository = userRepository;
+//        this.typeRepository = typeRepository;
     }
-
 
     @GetMapping
     public List<User> getUser() {
-        return UserService.getUser();
+        return userService.getUser();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("ById/{id}")
     public User getUsers(@PathVariable String id) {
-        return UserService.getUsers(id);
+        return userService.getUsers(id);
     }
+
+    @GetMapping("/{username}")
+    public User getUserByUserName(@PathVariable String username) {
+        return userService.getUserByUserName(username);
+    }
+
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return UserService.createUser(user);
+        return userService.createUser(user);
     }
 
-    @PutMapping
-    public void updateUser(@PathVariable String id, @RequestBody User data) {
-        UserService.updateUser(id, data);
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable String id, @RequestBody User data) {
+
+        return userService.updateUser(id, data);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable String id) {
-        UserService.deleteUser(id);
+        userService.deleteUser(id);
     }
-    @PutMapping("/{userId}/types/{typeId}")
-    User addTypeToUser(
-            @PathVariable Long userId,
-            @PathVariable Long typeId
-    ) {
-        User user = UserRepository.findById(userId).get();
-        Type type = TypeRepository.findById(typeId).get();
-        user.types.add(type);
-        return UserRepository.save(user);
+
+    @PostMapping("/addType")
+    public User addTypeToUser(@RequestBody User user) {
+
+        return userService.addTypeToUser(user);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.type;
 
-import com.example.demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +31,14 @@ public class TypeController {
         return TypeService.createType(type);
     }
 
-    @PutMapping
+    @DeleteMapping("/{id}")
+    public void deleteType(@PathVariable String id) {
+        TypeService.deleteType(id);
+    }
+
+    @PutMapping("/{id}")
     public void updateType(@PathVariable String id,@RequestBody Type data){
+
         TypeService.updateType(id,data);
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.type;
 
 import com.example.demo.post.Post;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,19 +12,20 @@ import java.util.Collection;
 @Table(name="Type")
 public class Type {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String Type;
-
+    private String type;
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<User> users = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "type")
     private Collection<Post> posts=new ArrayList<>();
 
     public Type(long id, String type, Collection<User> users, Collection<Post> posts) {
         this.id = id;
-        Type = type;
+        this.type = type;
         this.users = users;
         this.posts = posts;
     }
@@ -39,11 +41,11 @@ public class Type {
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
     public void setType(String type) {
-        Type = type;
+        this.type = type;
     }
 
     public Collection<User> getUsers() {
@@ -66,7 +68,7 @@ public class Type {
     public String toString() {
         return "Type{" +
                 "id=" + id +
-                ", Type='" + Type + '\'' +
+                ", Type='" + type + '\'' +
                 ", users=" + users +
                 ", posts=" + posts +
                 '}';
