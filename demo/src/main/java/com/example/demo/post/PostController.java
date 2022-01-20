@@ -15,13 +15,10 @@ import java.util.List;
 public class PostController {
 
    private final PostService PostService;
-   private final UserRepository userRepository;
-   private final TypeRepository typeRepository;
+
     @Autowired
-    public PostController(PostService postService, UserRepository userRepository, TypeRepository typeRepository) {
+    public PostController(PostService postService) {
         this.PostService = postService;
-        this.userRepository = userRepository;
-        this.typeRepository = typeRepository;
     }
 
     @GetMapping
@@ -34,14 +31,13 @@ public class PostController {
         return PostService.getPosts(id);
     }
 
-    @PostMapping
+    @GetMapping("getByType/{type}") //علشان يفرق بينها وبين الid
+    public List<Post> getPostByType(@PathVariable String type){
+        return PostService.getPostByType(type);
+    }
+
+    @PostMapping("/createPost")
     public Post createPost(@RequestBody Post post){
-        Long u_id = post.getUser().getId();
-        User u = userRepository.findById(u_id).orElse(null);
-        post.setUser(u);
-        Long t_id = post.getType().getId();
-        Type t = typeRepository.findById(t_id).orElse(null);
-        post.setType(t);
         return PostService.createPost(post);
     }
 

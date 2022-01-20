@@ -17,22 +17,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private long NID;
+    @Column(unique=true)
+    private String username;
     private String FName;
     private String LName;
     private long Phone_number;
     private String password;
+    private String role;
+
 
 
     @ManyToMany(mappedBy = "users")
-//    @JoinTable(
-//            name = "type_users",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "type_id")
-//    )
      Collection<Type> types = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @JsonIgnoreProperties("user")
     private Collection<Post> posts=new ArrayList<>();
@@ -41,18 +39,25 @@ public class User {
     @JsonIgnore
     private Collection<Comment> comment=new ArrayList<>();
 
-    public User(long NID, String FName, String LName, long phone_number, String password, Collection<Type> types, Collection<Post> posts, Collection<Comment> comment) {
-        this.NID = NID;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(long id, String username, String FName, String LName, long phone_number, String password, String role, Collection<Type> types, Collection<Post> posts, Collection<Comment> comment) {
+        this.id = id;
+        this.username = username;
         this.FName = FName;
         this.LName = LName;
-        Phone_number = phone_number;
+        this.Phone_number = phone_number;
         this.password = password;
+        this.role = role;
         this.types = types;
         this.posts = posts;
         this.comment = comment;
     }
 
-    public User() {
+    public User(String username) {
     }
 
     public long getId() {
@@ -63,12 +68,12 @@ public class User {
         this.id = id;
     }
 
-    public long getNID() {
-        return NID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNID(long NID) {
-        this.NID = NID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFName() {
@@ -127,15 +132,24 @@ public class User {
         this.comment = comment;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", NID=" + NID +
+                ", username='" + username + '\'' +
                 ", FName='" + FName + '\'' +
                 ", LName='" + LName + '\'' +
                 ", Phone_number=" + Phone_number +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 ", types=" + types +
                 ", posts=" + posts +
                 ", comment=" + comment +

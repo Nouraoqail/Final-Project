@@ -14,7 +14,7 @@ public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String Type;
+    private String type;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<User> users = new ArrayList<>();
@@ -25,7 +25,7 @@ public class Type {
 
     public Type(long id, String type, Collection<User> users, Collection<Post> posts) {
         this.id = id;
-        Type = type;
+        this.type = type;
         this.users = users;
         this.posts = posts;
     }
@@ -41,11 +41,11 @@ public class Type {
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
     public void setType(String type) {
-        Type = type;
+        this.type = type;
     }
 
     public Collection<User> getUsers() {
@@ -68,7 +68,7 @@ public class Type {
     public String toString() {
         return "Type{" +
                 "id=" + id +
-                ", Type='" + Type + '\'' +
+                ", Type='" + type + '\'' +
                 ", users=" + users +
                 ", posts=" + posts +
                 '}';

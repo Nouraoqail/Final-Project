@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.net.URL;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,7 +22,7 @@ public class Post {
     private String Description;
     private Instant time;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @JoinColumn(name="user_id")
     @JsonIgnoreProperties("posts")
@@ -34,7 +32,9 @@ public class Post {
     @JoinColumn(name="type_id",nullable = false)
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     private Type type;
-    @OneToMany(mappedBy = "post")
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("post")
     private Collection<Comment> comment=new ArrayList<>();
 
     public Post(long id, String title, String image, String description, Instant time, User user, Type type, Collection<Comment> comment) {
@@ -123,8 +123,6 @@ public class Post {
                 ", image=" + image +
                 ", Description='" + Description + '\'' +
                 ", time=" + time +
-                ", user=" + user +
-                ", type=" + type +
                 ", comment=" + comment +
                 '}';
     }

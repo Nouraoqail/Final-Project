@@ -1,6 +1,5 @@
 package com.example.demo.type;
 
-import com.example.demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +28,19 @@ public class TypeService {
         return TypeRepository.save(type);
     }
 
-    public void updateType(String id, Type data) {
+    public void deleteType(String id){
+        Long type_id=Long.parseLong(id);
+        TypeRepository.deleteById(type_id);
+    }
+
+    public Type updateType(String id, Type data) {
         Long type_id = Long.parseLong(id);
         Type type = TypeRepository.findById(type_id).orElse(null);
 
         if (type != null) {
             type.setType(data.getType());
+            TypeRepository.save(type);
         }
+        return type;
     }
 }
